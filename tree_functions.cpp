@@ -1,66 +1,66 @@
-#include <iostream>       
-#include <queue>
-#include <vector>
+#include <iostream>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
+template <typename T>
 struct node {
-    int data;
-    node* left, * right;
+	T data;
+	node* left, * right;
+	node(T val) : data(val), left(nullptr), right(nullptr) {};
+	void preorder(node<T>* root) {
+		if (root == nullptr) return;
+		cout << root->data << " ";
+		preorder(root->right);
+		preorder(root->left);
+	}
+	void inorder(node<T>* root) {
+		if (root == nullptr) return;
+		inorder(root->left);
+		cout << root->data << " ";
+		inorder(root->right);
+	}
+	void postorder(node<T>* root) {
+		if (root == nullptr) return;
+		postorder(root->left);
+		postorder(root->right);
+		cout << root->data << " ";
+	}
+	int height(node<T>* root) {
+		if (root == nullptr) return -1;
+
+		int lheight = height(root->left), rheight = height(root->right);
+		return max(lheight, rheight) + 1;
+	}
+	int depth(node<T>* root, T value) {
+		if (root == nullptr) return -1;
+		int dist = -1;
+		if (root->data == value || dist = depth(root->left) >= 0 || dist = depth(root->right) {
+			return dist + 1;
+		}
+		return dist;
+	}
 };
 
-node* newNode(int item)
-{
-    node* temp = new node;
-    temp->data = item;
-    temp->left = temp->right = NULL;
-    return temp;
-}
+template <typename T>
+void insertNode(node<T>* root, T value) {
+	node<T>* New = new node<T>(value);
 
-int height(node* tree) {
-    if (tree == nullptr) return -1;
+	stack<node<T>*>q;
+	q.push(root);
+	while (!q.empty()) {
+		node<T>* temp = q.top();
+		q.pop();
+		if (temp->right == nullptr) {
+			temp->right = New;
+			break;
+		}
+		else q.push(temp->right);
 
-    int lheight = height(tree->left);
-    int rheight = height(tree->right);
-
-    return max(lheight, rheight) + 1;
-}
-
-int findDepth(node* root, int x) {
-    if (root == nullptr) 
-        return -1;
-    int dist = -1;
-    if ((root->data == x)
-
-        || (dist = findDepth(root->left, x)) >= 0
-
-        || (dist = findDepth(root->right, x)) >= 0) {
-
-        return dist + 1;
-    }
-        return dist;
-}
-
-void inOrder(node* root) {
-    if (root == nullptr) return;
-
-    inOrder(root->left);
-
-    cout << root->data << " ";
-
-    inOrder(root->right);
-}
-
-void preOrder(node* root) {
-    if (root == nullptr)return;
-    cout << root->data << " ";
-    preOrder(root->left);
-    preOrder(root->right);
-}
-
-void postOrder(node* root) {
-    if (root == nullptr) return;
-    postOrder(root->left);
-    postOrder(root->right);
-    cout << root->data << " ";
+		if (temp->left == nullptr) {
+			temp->left = New;
+			break;
+		}
+		else q.push(temp->left);
+	}
 }
